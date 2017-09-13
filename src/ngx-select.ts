@@ -21,4 +21,6 @@ export * from './select.component';
         FormsModule
     ]
 })
-export class SelectModule {}
+export class SelectModule {
+
+}

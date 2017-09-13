@@ -4,9 +4,9 @@
 /node_modules
 /src
 
-/dist/ng-select.js
-/dist/ng-select.d.ts
-/dist/ng-select.metadata.json
+/dist/ngx-select.js
+/dist/ngx-select.d.ts
+/dist/ngx-select.metadata.json
 
 yarn.lock
 gulpfile.js

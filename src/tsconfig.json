@@ -16,7 +16,7 @@
         ]
     },
     "files": [
-        "ng-select.ts",
+        "ngx-select.ts",
         "option.spec.ts",
         "option-list.spec.ts"
     ],

@@ -14,14 +14,14 @@ export const SELECT_VALUE_ACCESSOR: ExistingProvider = {
 };
 
 @Component({
-    selector: 'ng-select',
+    selector: 'ngx-select',
     template: TEMPLATE,
     styles: [STYLE],
     providers: [SELECT_VALUE_ACCESSOR],
     encapsulation: ViewEncapsulation.None
 })
 
-export class SelectComponent implements ControlValueAccessor, OnChanges, OnInit {
+export class SelectComponent<T> implements ControlValueAccessor, OnChanges, OnInit {
 
     // Data input.
     @Input() options: Array<IOption> = [];
@@ -52,13 +52,13 @@ export class SelectComponent implements ControlValueAccessor, OnChanges, OnInit 
     @Output() noOptionsFound = new EventEmitter<string>();
 
     @ViewChild('selection') selectionSpan: ElementRef;
-    @ViewChild('dropdown') dropdown: SelectDropdownComponent;
+    @ViewChild('dropdown') dropdown: SelectDropdownComponent<T>;
     @ViewChild('filterInput') filterInput: ElementRef;
 
     @ContentChild('optionTemplate') optionTemplate: TemplateRef<any>;
 
     private _value: Array<any> = [];
-    private optionList: OptionList = new OptionList([]);
+    private optionList: OptionList<T> = new OptionList<T>([]);
 
     // View state variables.
     hasFocus: boolean = false;
@@ -145,7 +145,7 @@ export class SelectComponent implements ControlValueAccessor, OnChanges, OnInit 
         this.optionListClicked = true;
     }
 
-    onDropdownOptionClicked(option: Option) {
+    onDropdownOptionClicked(option: Option<T>) {
         this.optionClicked = true;
         this.multiple ? this.toggleSelectOption(option) : this.selectOption(option);
     }
@@ -180,7 +180,7 @@ export class SelectComponent implements ControlValueAccessor, OnChanges, OnInit 
         this.closeDropdown(true);
     }
 
-    onDeselectOptionClick(option: Option) {
+    onDeselectOptionClick(option: Option<T>) {
         this.clearClicked = true;
         this.deselectOption(option);
     }
@@ -251,19 +251,19 @@ export class SelectComponent implements ControlValueAccessor, OnChanges, OnInit 
 
     /** Value. **/
 
-    get value(): string | string[] {
+    get value(): T | T[] {
         return this.multiple ? this._value : this._value[0];
     }
 
-    set value(v: string | string[]) {
-        if (typeof v === 'undefined' || v === null || v === '') {
+    set value(v: T | T[]) {
+        if (typeof v === 'undefined' || v === null || !!!v) {
             v = [];
         }
         else if (typeof v === 'string') {
             v = [v];
         }
         else if (!Array.isArray(v)) {
-            throw new TypeError('Value must be a string or an array.');
+            v = [v];
         }
 
         this.optionList.value = v;
@@ -284,7 +284,7 @@ export class SelectComponent implements ControlValueAccessor, OnChanges, OnInit 
 
     /** Select. **/
 
-    private selectOption(option: Option) {
+    private selectOption(option: Option<T>) {
         if (!option.selected && !option.disabled) {
             this.optionList.select(option, this.multiple);
             this.valueChanged();
@@ -292,7 +292,7 @@ export class SelectComponent implements ControlValueAccessor, OnChanges, OnInit 
         }
     }
 
-    private deselectOption(option: Option) {
+    private deselectOption(option: Option<T>) {
         if (option.selected) {
             this.optionList.deselect(option);
             this.valueChanged();
@@ -311,7 +311,7 @@ export class SelectComponent implements ControlValueAccessor, OnChanges, OnInit 
     }
 
     private clearSelection() {
-        let selection: Array<Option> = this.optionList.selection;
+        let selection: Array<Option<T>> = this.optionList.selection;
         if (selection.length > 0) {
             this.optionList.clearSelection();
             this.valueChanged();
@@ -325,12 +325,12 @@ export class SelectComponent implements ControlValueAccessor, OnChanges, OnInit 
         }
     }
 
-    private toggleSelectOption(option: Option) {
+    private toggleSelectOption(option: Option<T>) {
         option.selected ? this.deselectOption(option) : this.selectOption(option);
     }
 
     private selectHighlightedOption() {
-        let option: Option = this.optionList.highlightedOption;
+        let option: Option<T> = this.optionList.highlightedOption;
         if (option !== null) {
             this.selectOption(option);
             this.closeDropdown(true);
@@ -338,10 +338,10 @@ export class SelectComponent implements ControlValueAccessor, OnChanges, OnInit 
     }
 
     private deselectLast() {
-        let sel: Array<Option> = this.optionList.selection;
+        let sel: Array<Option<T>> = this.optionList.selection;
 
         if (sel.length > 0) {
-            let option: Option = sel[sel.length - 1];
+            let option: Option<T> = sel[sel.length - 1];
             this.deselectOption(option);
             this.setMultipleFilterInput(option.label + ' ');
         }

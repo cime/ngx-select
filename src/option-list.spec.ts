@@ -26,7 +26,7 @@ describe('An OptionList\'s constructor', () => {
     });
 
     it('creates empty list if undefined is provided as parameter', () => {
-        let optionList: OptionList = new OptionList(undefined);
+        let optionList: OptionList<any> = new OptionList(undefined);
 
         expect(optionList.options.length).toBe(0);
         expect(optionList.hasShown).toBe(false);
@@ -34,7 +34,7 @@ describe('An OptionList\'s constructor', () => {
     });
 
     it('creates empty list if null is provided as parameter', () => {
-        let optionList: OptionList = new OptionList(null);
+        let optionList: OptionList<any> = new OptionList(null);
 
         expect(optionList.options.length).toBe(0);
         expect(optionList.hasShown).toBe(false);
@@ -44,7 +44,7 @@ describe('An OptionList\'s constructor', () => {
 
 describe('An OptionList\'s getOptionsByValue function', () => {
 
-    let optionList: OptionList;
+    let optionList: OptionList<any>;
 
     beforeEach(() => {
         let options: Array<IOption> = numbers.map((i) => {
@@ -58,21 +58,21 @@ describe('An OptionList\'s getOptionsByValue function', () => {
 
     it('returns empty list if list of options is empty', () => {
         optionList = new OptionList([]);
-        let result: Array<Option> = optionList.getOptionsByValue('test');
+        let result: Array<Option<any>> = optionList.getOptionsByValue('test');
 
         expect(result.constructor).toBe(Array);
         expect(result.length).toBe(0);
     });
 
     it('returns empty list if value is not in list of options', () => {
-        let result: Array<Option> = optionList.getOptionsByValue('test');
+        let result: Array<Option<any>> = optionList.getOptionsByValue('test');
 
         expect(result.constructor).toBe(Array);
         expect(result.length).toBe(0);
     });
 
     it('returns the option with requested value', () => {
-        let result: Array<Option> = optionList.getOptionsByValue('2');
+        let result: Array<Option<any>> = optionList.getOptionsByValue('2');
 
         expect(result.length).toBe(1);
         expect(result[0].label).toBe('Option 2');
@@ -81,7 +81,7 @@ describe('An OptionList\'s getOptionsByValue function', () => {
 
     it('returns all options with requested value', () => {
         optionList.options[4].wrappedOption.value = '3';
-        let result: Array<Option> = optionList.getOptionsByValue('3');
+        let result: Array<Option<any>> = optionList.getOptionsByValue('3');
 
         expect(result.length).toBe(2);
         expect(result[0].value).toBe('3');
@@ -91,7 +91,7 @@ describe('An OptionList\'s getOptionsByValue function', () => {
 
 describe('An OptionList\'s get value function', () => {
 
-    let optionList: OptionList;
+    let optionList: OptionList<any>;
 
     beforeEach(() => {
         let options: Array<IOption> = numbers.map((i) => {
@@ -139,7 +139,7 @@ describe('An OptionList\'s get value function', () => {
 
 describe('An OptionList\'s set value function', () => {
 
-    let optionList: OptionList;
+    let optionList: OptionList<any>;
 
     beforeEach(() => {
         let options: Array<IOption> = numbers.map((i) => {

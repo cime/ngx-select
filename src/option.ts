@@ -1,6 +1,6 @@
 import {IOption} from './option.interface';
 
-export class Option {
+export class Option<T> {
 
     wrappedOption: IOption;
 
@@ -18,7 +18,7 @@ export class Option {
         this.shown = true;
     }
 
-    get value(): string {
+    get value(): T {
         return this.wrappedOption.value;
     }
 
